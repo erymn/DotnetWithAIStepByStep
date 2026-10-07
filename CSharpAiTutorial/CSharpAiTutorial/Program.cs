@@ -24,8 +24,19 @@ IChatClient chatClient = new OpenAIClient(
         }
     ).GetChatClient(modelName).AsIChatClient();
 
-//start send first AI Prompt
-var response = await chatClient.GetResponseAsync("Explain dependency injection in C# in simple terms.");
+// //01. start send first AI Prompt (SINGLE PROMPT)
+// var response = await chatClient.GetResponseAsync("Explain dependency injection in C# in simple terms.");
+
+//02. Adding a System Instruction
+//An AI model can receive more than a single user prompt.
+//We can provide system-level instructions that describe the role or behavior we want.
+var messages = new List<ChatMessage>
+{
+    new ChatMessage(ChatRole.System, "You are a helpful C# programming assistant."),
+    new ChatMessage(ChatRole.User, "Explain async and await in C#.")
+};
+
+var response = await chatClient.GetResponseAsync(messages);
 
 Console.WriteLine(response);
     
